@@ -7,6 +7,7 @@ module.exports = {
     },
     url: 'https://api.notion.com/v1/users/me',
   },
+  connectionLabel: '{{name}}',
   fields: [
     {
       computed: false,
@@ -14,6 +15,7 @@ module.exports = {
       required: true,
       label: 'API Key',
       type: 'password',
+      helpText: 'Create an internal integration at https://www.notion.so/profile/integrations and copy the token.',
     },
   ],
   customConfig: {},
