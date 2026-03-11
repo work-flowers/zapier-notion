@@ -46,9 +46,11 @@ const perform = async (z, bundle) => {
         block.type === 'unsupported' &&
         block.unsupported?.block_type === block_type
       ) {
+        const blockIdNoDashes = block.id.replace(/-/g, '');
         matchingBlocks.push({
           id: block.id,
           block_type: block.unsupported.block_type,
+          block_url: `${page.url}#${blockIdNoDashes}`,
           parent_page_id: page.id,
           parent_page_url: page.url,
           created_time: block.created_time,
@@ -99,6 +101,7 @@ module.exports = {
     sample: {
       id: '31f91b07-11ac-81fe-942d-cc675929c9dc',
       block_type: 'mail',
+      block_url: 'https://www.notion.so/e62845894bb6442ea2676c1b8993df92#31f91b0711ac81fe942dcc675929c9dc',
       parent_page_id: 'e6284589-4bb6-442e-a267-6c1b8993df92',
       parent_page_url: 'https://www.notion.so/e62845894bb6442ea2676c1b8993df92',
       created_time: '2026-03-10T10:06:00.000Z',
@@ -108,6 +111,7 @@ module.exports = {
     outputFields: [
       { key: 'id', label: 'Block ID', type: 'string' },
       { key: 'block_type', label: 'Unsupported Block Type', type: 'string' },
+      { key: 'block_url', label: 'Block URL', type: 'string' },
       { key: 'parent_page_id', label: 'Parent Page ID', type: 'string' },
       { key: 'parent_page_url', label: 'Parent Page URL', type: 'string' },
       { key: 'created_time', label: 'Created Time', type: 'datetime' },
