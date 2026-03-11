@@ -1,10 +1,6 @@
 const perform = async (z, bundle) => {
   const response = await z.request({
     url: 'https://api.notion.com/v1/users',
-    headers: {
-      Authorization: `Bearer ${bundle.authData.api_key}`,
-      'Notion-Version': '2025-09-03',
-    },
   });
   return response.data.results;
 };
