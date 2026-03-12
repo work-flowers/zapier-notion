@@ -6,32 +6,26 @@ const perform = async (z, bundle) => {
   return pollBlocks(
     z,
     data_source_id,
-    (block) =>
-      block.type === 'unsupported' &&
-      block.unsupported?.block_type === block_type,
+    (block) => block.type === block_type,
     (block, page) => {
       const blockIdNoDashes = block.id.replace(/-/g, '');
       return {
-        id: block.id,
-        block_type: block.unsupported.block_type,
+        ...block,
         block_url: `${page.url}#${blockIdNoDashes}`,
         parent_page_id: page.id,
         parent_page_url: page.url,
-        created_time: block.created_time,
-        last_edited_time: block.last_edited_time,
-        has_children: block.has_children,
       };
     },
   );
 };
 
 module.exports = {
-  key: 'new_unsupported_block',
+  key: 'new_block',
   noun: 'Block',
   display: {
-    label: 'New Unsupported Block',
+    label: 'New Block',
     description:
-      'Triggers when a new block of a specific unsupported type appears in a data source.',
+      'Triggers when a new block of a specific type appears in a data source.',
   },
   operation: {
     perform,
@@ -47,39 +41,52 @@ module.exports = {
       },
       {
         key: 'block_type',
-        label: 'Unsupported Block Type',
+        label: 'Block Type',
         type: 'string',
+        default: 'meeting_notes',
         required: true,
-        default: 'mail',
         helpText:
-          'The unsupported block type to watch for (e.g. "mail"). This matches the `unsupported.block_type` field in the Notion API response.',
+          'The block type to watch for (e.g. "paragraph", "to_do", "callout", "image", "code").',
       },
     ],
     sample: {
-      id: '31f91b07-11ac-81fe-942d-cc675929c9dc',
-      block_type: 'mail',
-      block_url:
-        'https://www.notion.so/e62845894bb6442ea2676c1b8993df92#31f91b0711ac81fe942dcc675929c9dc',
-      parent_page_id: 'e6284589-4bb6-442e-a267-6c1b8993df92',
-      parent_page_url:
-        'https://www.notion.so/e62845894bb6442ea2676c1b8993df92',
+      object: 'block',
+      id: 'abc12345-1234-5678-abcd-1234567890ab',
+      parent: {
+        type: 'page_id',
+        page_id: 'abc12345-1234-5678-abcd-1234567890ab',
+      },
       created_time: '2026-03-10T10:06:00.000Z',
       last_edited_time: '2026-03-10T10:07:00.000Z',
+      created_by: { object: 'user', id: 'abc12345' },
+      last_edited_by: { object: 'user', id: 'abc12345' },
       has_children: false,
+      in_trash: false,
+      type: 'paragraph',
+      paragraph: {
+        rich_text: [
+          {
+            type: 'text',
+            text: { content: 'Hello world', link: null },
+            plain_text: 'Hello world',
+          },
+        ],
+        color: 'default',
+      },
+      block_url: 'https://www.notion.so/abc123456789#def456789012',
+      parent_page_id: 'abc12345-1234-5678-abcd-1234567890ab',
+      parent_page_url: 'https://www.notion.so/abc123456789',
     },
     outputFields: [
       { key: 'id', label: 'Block ID', type: 'string' },
-      { key: 'block_type', label: 'Unsupported Block Type', type: 'string' },
+      { key: 'type', label: 'Block Type', type: 'string' },
       { key: 'block_url', label: 'Block URL', type: 'string' },
       { key: 'parent_page_id', label: 'Parent Page ID', type: 'string' },
       { key: 'parent_page_url', label: 'Parent Page URL', type: 'string' },
       { key: 'created_time', label: 'Created Time', type: 'datetime' },
-      {
-        key: 'last_edited_time',
-        label: 'Last Edited Time',
-        type: 'datetime',
-      },
+      { key: 'last_edited_time', label: 'Last Edited Time', type: 'datetime' },
       { key: 'has_children', label: 'Has Children', type: 'boolean' },
+      { key: 'in_trash', label: 'In Trash', type: 'boolean' },
     ],
   },
 };
