@@ -6,6 +6,7 @@ const newBlockTrigger = require('./triggers/new_block');
 const newUnsupportedBlockTrigger = require('./triggers/new_unsupported_block');
 const newBlockWebhookTrigger = require('./triggers/new_block_webhook');
 const newUnsupportedBlockWebhookTrigger = require('./triggers/new_unsupported_block_webhook');
+const findBlocksByTypeSearch = require('./searches/find_blocks_by_type');
 
 module.exports = {
   version: require('./package.json').version,
@@ -19,5 +20,8 @@ module.exports = {
     [newUnsupportedBlockTrigger.key]: newUnsupportedBlockTrigger,
     [newBlockWebhookTrigger.key]: newBlockWebhookTrigger,
     [newUnsupportedBlockWebhookTrigger.key]: newUnsupportedBlockWebhookTrigger,
+  },
+  searches: {
+    [findBlocksByTypeSearch.key]: findBlocksByTypeSearch,
   },
 };
