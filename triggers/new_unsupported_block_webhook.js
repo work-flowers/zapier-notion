@@ -2,11 +2,11 @@ const { subscribe, unsubscribe, fetchBlock, fetchPage } = require('../lib/webhoo
 const { pollBlocks } = require('../lib/poll-blocks');
 
 const performSubscribe = async (z, bundle) => {
-  return subscribe(z, bundle.targetUrl, ['page.content_updated']);
+  return subscribe(z, bundle.targetUrl);
 };
 
 const performUnsubscribe = async (z, bundle) => {
-  await unsubscribe(z, bundle.subscribeData.id);
+  await unsubscribe(z);
 };
 
 const perform = async (z, bundle) => {
@@ -104,7 +104,7 @@ module.exports = {
         required: true,
         default: 'mail',
         helpText:
-          'The unsupported block type to watch for (e.g. "mail"). This matches the `unsupported.block_type` field in the Notion API response.',
+          'The unsupported block type to watch for (e.g. "mail"). This matches the `unsupported.block_type` field in the Notion API response. **Important:** You must also configure a webhook in your [Notion integration settings](https://www.notion.so/profile/integrations). Add a webhook subscription for `page.content_updated` events, and set the webhook URL to the URL shown in this Zap\'s webhook settings.',
       },
     ],
     sample: {
