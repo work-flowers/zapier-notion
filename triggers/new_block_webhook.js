@@ -2,11 +2,11 @@ const { subscribe, unsubscribe, fetchBlock, fetchPage } = require('../lib/webhoo
 const { pollBlocks } = require('../lib/poll-blocks');
 
 const performSubscribe = async (z, bundle) => {
-  return subscribe(z, bundle.targetUrl, ['page.content_updated']);
+  return subscribe(z, bundle.targetUrl);
 };
 
 const performUnsubscribe = async (z, bundle) => {
-  await unsubscribe(z, bundle.subscribeData.id);
+  await unsubscribe(z);
 };
 
 const perform = async (z, bundle) => {
@@ -92,7 +92,7 @@ module.exports = {
         default: 'meeting_notes',
         required: true,
         helpText:
-          'The block type to watch for (e.g. "paragraph", "to_do", "callout", "image", "code", "meeting_notes").',
+          'The block type to watch for (e.g. "paragraph", "to_do", "callout", "image", "code", "meeting_notes"). **Important:** You must also configure a webhook in your [Notion integration settings](https://www.notion.so/profile/integrations). Add a webhook subscription for `page.content_updated` events, and set the webhook URL to the URL shown in this Zap\'s webhook settings.',
       },
     ],
     sample: {
